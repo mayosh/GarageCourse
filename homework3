@@ -1,0 +1,62 @@
+class Car
+  def initialize(options={}, &block)
+    self.engine = options[:engine]
+    self.size = options[:size]
+    self.turbo = options[:turbo]    
+    instance_eval(&block) if block_given?
+  end
+  def engine=(engine)
+    @engine=engine    
+  end
+  def engine
+    @engine
+  end
+  
+  def size=(size)
+    @size=size
+  end
+  def size
+    @size
+  end
+  
+  def turbo=(turbo)
+    @turbo=turbo
+  end
+  def turbo
+    @turbo
+  end
+  
+  def engine_info
+    str = ''
+    if turbo
+      str << "Turbo "
+    end
+    if turbo
+      str << "#{engine.to_s.capitalize} engine #{size.to_f}"
+    else      
+      str << "#{size.to_f} #{engine.to_s.capitalize} engine"      
+    end
+  end
+end
+
+a = Car.new
+a.engine = :diesel
+a.size = 1.6
+puts a.engine
+puts a.size
+puts a.engine_info
+
+params = {:engine => :gas, :size => 1.4}
+b = Car.new(params).engine_info
+puts b
+
+Car.new.engine_info #should fail
+Car.new(asdasd: true) #should fail
+c = Car.new(engine: :diesel, size: 2, turbo: true).engine_info
+puts c
+
+d = Car.new do
+  self.engine = :diesel
+  self.size = 3
+end
+puts d.engine_info
